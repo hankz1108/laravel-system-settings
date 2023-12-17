@@ -1,0 +1,17 @@
+
+{
+    "name": "hankz1108/laravel-system-settings",
+    "description": "A Laravel package designed for managing system configuration values.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "hank",
+            "email": "hankz1108@gmail.com"
+        }
+    ],
+    "minimum-stability": "alpha",
+    "require": {},
+    "require-dev": {
+    }
+}
