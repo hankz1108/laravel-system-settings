@@ -17,8 +17,6 @@ class SystemSettingManager
     }
 
     /**
-     * @param $key
-     *
      * @return bool
      */
     public static function has($key, $group = 'default')
@@ -29,7 +27,6 @@ class SystemSettingManager
     }
 
     /**
-     * @param $key
      * @param null $default
      *
      * @return string|null
@@ -62,11 +59,9 @@ class SystemSettingManager
     }
 
     /**
-     * @param $key
-     * @param $value
      * @param string $group
-     * @param null $description
-     * @param bool $createWhenNotExist
+     * @param null   $description
+     * @param bool   $createWhenNotExist
      *
      * @return void
      */
@@ -80,7 +75,7 @@ class SystemSettingManager
             $setting->value = $value;
             $setting->description = $description;
             $setting->save();
-        } else if ($createWhenNotExist) {
+        } elseif ($createWhenNotExist) {
             SystemSetting::create([
                 'key' => $key,
                 'value' => $value,
