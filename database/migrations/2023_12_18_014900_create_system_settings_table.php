@@ -15,8 +15,8 @@ class CreateSystemSettingsTable extends Migration
     {
         Schema::create(env('system-settings.table_name'), function (Blueprint $table) {
             $table->id();
-            $table->string('group')->default('default')->comment('取用group');
-            $table->string('key')->unique()->comment('取用key');
+            $table->string('group')->comment('取用group');
+            $table->string('key')->comment('取用key');
             $table->text('value')->nullable()->comment('內容');
             $table->text('description')->nullable()->comment('說明');
             $table->timestamps();

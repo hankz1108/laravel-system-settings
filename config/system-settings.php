@@ -1,7 +1,15 @@
 <?php
 
-
 return [
-    // 系統設定值資料表名稱
+    /**
+     * use table name.
+     */
     'table_name' => 'system_settings',
+
+    /**
+     * default value.
+     */
+    'default' => [
+        'group' => 'default',
+    ],
 ];
