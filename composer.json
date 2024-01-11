@@ -1,5 +1,5 @@
 {
-    "name": "hankz1108/laravel-system-settings",
+    "name": "hankz/laravel-system-settings",
     "description": "A Laravel package designed for managing system configuration values in database.",
     "type": "library",
     "license": "MIT",
@@ -9,14 +9,19 @@
             "email": "hankz1108@gmail.com"
         }
     ],
-    "minimum-stability": "alpha",
-    "require-dev": {
-        "laravel/framework": "^8.83"
+    "version": "1.0.0",
+    "minimum-stability": "dev",
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Hankz\\LaravelSystemSettings\\": "src/"
+        }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Hankz\\LaravelSystemSettings\\Providers\\SystemSettingProvider"
+                "Hankz\\LaravelSystemSettings\\SystemSettingProvider"
             ]
         }
     }
