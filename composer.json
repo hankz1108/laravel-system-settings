@@ -9,10 +9,8 @@
             "email": "hankz1108@gmail.com"
         }
     ],
-    "version": "1.0.0",
-    "minimum-stability": "dev",
-    "require": {
-    },
+    "minimum-stability": "stable",
+    "require": {},
     "autoload": {
         "psr-4": {
             "Hankz\\LaravelSystemSettings\\": "src/"
