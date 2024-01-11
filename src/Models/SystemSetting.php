@@ -8,6 +8,11 @@ class SystemSetting extends Model
 {
     protected $table = 'system_settings';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'group',
         'key',
@@ -17,6 +22,6 @@ class SystemSetting extends Model
 
     public function __construct()
     {
-        $this->table = env('system-settings.table_name');
+        $this->table = config('system-settings.table_name');
     }
 }
