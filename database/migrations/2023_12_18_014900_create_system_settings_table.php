@@ -13,7 +13,7 @@ class CreateSystemSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create(env('system-settings.table_name'), function (Blueprint $table) {
+        Schema::create(config('system-settings.table_name'), function (Blueprint $table) {
             $table->id();
             $table->string('group')->comment('取用group');
             $table->string('key')->comment('取用key');
@@ -30,6 +30,6 @@ class CreateSystemSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(env('system-settings.table_name'));
+        Schema::dropIfExists(config('system-settings.table_name'));
     }
 }

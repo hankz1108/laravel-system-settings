@@ -13,20 +13,15 @@ class SystemSettingManager
      * @param string $group
      * @param string $description
      *
-     * @return SystemSetting
+     * @return bool
      */
-    public static function create($key, $value, $group = null, $description = null)
+    public static function new($key, $value, $group = null, $description = null)
     {
         if (static::has($key, $group)) {
             throw new SystemSettingAlreadyExistsException();
         }
 
-        return SystemSetting::create([
-            'key' => $key,
-            'value' => $value,
-            'group' => $group ?? config('system-settings.default.group'),
-            'description' => $description,
-        ]);
+        return (static::create($key, $value, $group, $description) instanceof SystemSetting);
     }
 
     /**
@@ -38,6 +33,14 @@ class SystemSettingManager
     public static function has($key, $group = null)
     {
         return static::buildFindQuery($key, $group)->exists();
+    }
+
+    /**
+     * @return array
+     */
+    public static function all()
+    {
+        return app(SystemSetting::class)->pluck('value', 'key')->toArray();
     }
 
     /**
@@ -55,6 +58,8 @@ class SystemSettingManager
     }
 
     /**
+     * @param string $key
+     * @param string $value
      * @param string $group
      * @param string $description
      * @param bool   $createWhenNotExist
@@ -70,12 +75,7 @@ class SystemSettingManager
             $setting->description = $description;
             $setting->save();
         } elseif ($createWhenNotExist) {
-            SystemSetting::create([
-                'key' => $key,
-                'value' => $value,
-                'group' => $group,
-                'description' => $description,
-            ]);
+            static::create($key, $value, $group, $description);
         }
     }
 
@@ -86,30 +86,80 @@ class SystemSettingManager
      */
     public static function getByGroup($group)
     {
-        $settings = SystemSetting::where('group', $group)->get();
-
-        return $settings->keyBy('key')->all();
+        return app(SystemSetting::class)->select(['key', 'value'])
+            ->where('group', $group)
+            ->pluck('value', 'key')
+            ->toArray();
     }
 
     /**
-     * @param array  $settings [key => ['value' => '', 'description' => '']]
+     * @param array  $settings           [key => ['value' => '', 'description' => '']]
      * @param string $group
+     * @param bool   $createWhenNotExist
      *
      * @return void
      */
-    public static function setByGroup($settings, $group = null)
+    public static function setByGroup($settings, $group = null, $createWhenNotExist = false)
     {
-        $oldSettings = SystemSetting::where('group', $group)->get();
+        $oldSettings = app(SystemSetting::class)->where('group', $group)->get();
 
         foreach ($oldSettings as $oldSetting) {
-            if (key_exists($settings, $oldSetting->key)) {
+            if (key_exists($oldSetting->key, $settings)) {
                 $newSetting = $settings[$oldSetting->key];
 
                 $oldSetting->value = data_get($newSetting, 'value');
                 $oldSetting->description = data_get($newSetting, 'description');
                 $oldSetting->save();
+
+                unset($settings[$oldSetting->key]);
             }
         }
+
+        if ($createWhenNotExist) {
+            foreach ($settings as $key => $setting) {
+                static::create(
+                    $key,
+                    data_get($setting, 'value'),
+                    $group,
+                    data_get($setting, 'description')
+                );
+            }
+        }
+    }
+
+    /**
+     * @param string $key
+     * @param string $group
+     *
+     * @return bool|null
+     */
+    public static function delete($key, $group = null)
+    {
+        $setting = static::buildFindQuery($key, $group)->first();
+
+        return $setting ? $setting->delete() : false;
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @param string $group
+     * @param string $description
+     *
+     * @return SystemSetting
+     */
+    protected static function create($key, $value, $group = null, $description = null)
+    {
+        $systemSetting = app(SystemSetting::class);
+
+        $systemSetting->fill([
+            'key' => $key,
+            'value' => $value,
+            'group' => $group ?? config('system-settings.default.group'),
+            'description' => $description,
+        ])->save();
+
+        return $systemSetting;
     }
 
     /**
@@ -124,7 +174,7 @@ class SystemSettingManager
             $group = config('system-settings.default.group');
         }
 
-        $query = SystemSetting::where('key', $key)
+        $query = app(SystemSetting::class)->where('key', $key)
             ->where('group', $group);
 
         return $query;
