@@ -1,3 +1,7 @@
+<p align="right">
+    English Document | <a title="繁體中文文件" href="README.zh-TW.md">繁體中文文件 </a>
+</p>
+
 # Laravel System Settings
 A Laravel package designed for managing system configuration values in database.
 
@@ -196,9 +200,8 @@ SystemSettingManager::delete('keyName', 'groupName');
 ---
 
 ## To-do list
-- Write chniese document
 - Add audit log
 
 ## License
 
-[MIT License](https://github.com/hankz1108/laravel-system-settings/blob/main/LICENSE) © 2024 [Hankz](https://github.com/hankz1108)
+[MIT License](https://github.com/hankz1108/laravel-system-settings/blob/main/LICENSE) © 2023 [Hankz](https://github.com/hankz1108)
